@@ -89,10 +89,10 @@ public class ClienteDao extends Conexion {
         return respuesta;
     }
 
-    public String daoModificarCliente(Cliente datos) {
+    public String modificarCliente(Cliente datos) {
         try {
             this.Conectar();
-            sql = "update cliente set nombre=?, apellido=? where codigo=?";
+            sql = "update cliente set nombre=?, apellido=? where id=?";
             ejecutar = this.getMiconexion().prepareStatement(sql);
             ejecutar.setString(1, datos.getNombre());
             ejecutar.setString(2, datos.getApellido());

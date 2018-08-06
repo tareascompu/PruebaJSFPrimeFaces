@@ -62,7 +62,7 @@
                 <p:inputText value="#{beanCliente.datos.nombre}" required="true"/>
                 <p:outputLabel value="Descripción:"/>
                 <p:inputText value="#{beanCliente.datos.apellido}" required="true"/>
-                <p:commandButton value="Guardar"/>
+                <p:commandButton value="Guardar" actionListener="#{beanCliente.modificar()}" oncomplete="PF('wdialDatos').hide();" update=":frmTabla:tblDatos" />
             </h:form>
         </p:dialog>
     </h:body>

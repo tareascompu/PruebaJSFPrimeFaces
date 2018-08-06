@@ -44,6 +44,11 @@ public class BeanCliente{
     public void guardar(){
         clientedao.registrarCliente(datos);
     }
+    
+     public void modificar(){
+        clientedao.modificarCliente(datos);
+    }
+     
     public void listar(){
         
         try {
