@@ -15,10 +15,12 @@ import java.util.ArrayList;
  *
  * @author FamEscar
  */
-public class ClienteDao extends Conexion{
+public class ClienteDao extends Conexion {
+
     private String sql;
     private PreparedStatement ejecutar;
     private String respuesta;
+
     //Agregar un nuevo Cliente, Los procesos de eliminar y actualizar son similares
     public String registrarCliente(Cliente datos) {
         respuesta = null;
@@ -30,19 +32,19 @@ public class ClienteDao extends Conexion{
             ejecutar.setString(2, datos.getNombre());
             ejecutar.setString(3, datos.getApellido());
             ejecutar.setString(4, datos.getNit());
-                        
+
             ejecutar.executeUpdate();
-            
-            respuesta="Registro Almacenado con Exito";
+
+            respuesta = "Registro Almacenado con Exito";
         } catch (SQLException ex) {
             System.out.println("Error en Statement" + ex);
-            respuesta="No se pudo almacenar el registro";
+            respuesta = "No se pudo almacenar el registro";
         } finally {
             this.cerrarConex();
         }
         return respuesta;
     }
-    
+
     //BUSCAR DATOS
     public ArrayList<Cliente> listaClientes() {
         ArrayList<Cliente> lista = null;
@@ -59,8 +61,7 @@ public class ClienteDao extends Conexion{
                 clienten.setNombre(resultado.getString("nombre"));
                 clienten.setApellido(resultado.getString("apellido"));
                 clienten.setNit(resultado.getString("nit"));
-                
-                
+
                 lista.add(clienten);
             }
         } catch (Exception e) {
@@ -70,40 +71,66 @@ public class ClienteDao extends Conexion{
         }
         return lista;
     }
-    
-    public String eliminarCliente(int codigo){
+
+    public String eliminarCliente(int codigo) {
         try {
             this.Conectar();
-            sql="delete from cliente where id=?";
+            sql = "delete from cliente where id=?";
             ejecutar = this.getMiconexion().prepareStatement(sql);
             ejecutar.setInt(1, codigo);
             ejecutar.executeUpdate();
-            respuesta="Registro Eliminado";
-            
+            respuesta = "Registro Eliminado";
+
         } catch (SQLException ex) {
             //Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error en Conexion: " + ex);
-            respuesta="Error, no se puede eliminar el registro";
+            respuesta = "Error, no se puede eliminar el registro";
         }
-         return respuesta;
+        return respuesta;
     }
-    
-    public String daoModificarCliente(Cliente datos){
+
+    public String daoModificarCliente(Cliente datos) {
         try {
             this.Conectar();
-            sql="update cliente set nombre=?, apellido=? where codigo=?";
+            sql = "update cliente set nombre=?, apellido=? where codigo=?";
             ejecutar = this.getMiconexion().prepareStatement(sql);
             ejecutar.setString(1, datos.getNombre());
             ejecutar.setString(2, datos.getApellido());
             ejecutar.setInt(3, datos.getId());
             ejecutar.executeUpdate();
             respuesta = "datos modificados con exito";
-            
+
         } catch (SQLException ex) {
             //Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error en conexion: " + ex);
-            respuesta="No se puede modificar";
+            respuesta = "No se puede modificar";
         }
         return respuesta;
+    }
+
+    //BUSCAR DATOS
+    public Cliente mostrarCliente(Cliente datos) {
+        Cliente micliente = new Cliente();
+        ResultSet resultado;
+        try {
+            this.Conectar();
+            sql = "select * from cliente where id=?";
+            ejecutar = this.getMiconexion().prepareStatement(sql);
+            ejecutar.setInt(1, datos.getId());
+            resultado = ejecutar.executeQuery();
+
+            resultado.next();
+            
+            micliente.setId(resultado.getInt("id"));
+            micliente.setNombre(resultado.getString("nombre"));
+            micliente.setApellido(resultado.getString("apellido"));
+            micliente.setNit(resultado.getString("nit"));
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+        } finally {
+            this.cerrarConex();
+        }
+        return micliente;
     }
 }

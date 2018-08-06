@@ -2,12 +2,69 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        Hello from Facelets
+        <f:event type="preRenderView" listener="#{beanCliente.listar()}"/>
+
+
+        <h:form id="formulario">
+            <!--MENSAJE-->
+            <p:growl id="growl" showDetail="true" sticky="true" />  
+
+            <p:outputLabel for="txtCodigo" value="Código:"/>
+            <p:inputText id="txtCodigo" value="#{beanCliente.datos.id}" required="true"/>
+            <p:outputLabel for="txtNombre" value="Nombre:"/>
+            <p:inputText id="txtNombre" value="#{beanCliente.datos.nombre}" required="true"/>
+            <p:outputLabel for="txtApellido" value="Apellido:"/>
+            <p:inputText id="txtApellido" value="#{beanCliente.datos.apellido}" required="true"/>
+            <p:outputLabel for="txtNit" value="Nit:"/>
+            <p:inputText id="txtNit" value="#{beanCliente.datos.nit}" required="true"/>
+            <p:commandButton value="Guardar" actionListener="#{beanCliente.guardar()}" update=":frmTabla:tblDatos"/>
+        </h:form>
+
+        <br/><br/>
+
+        <!--Tabla-->
+        <h:form id='frmTabla'>
+
+            <p:dataTable id="tblDatos" var="cliente" value="#{beanCliente.lstCliente}">
+                <p:column headerText="Id">
+                    <h:outputText value="#{cliente.id}" />
+                </p:column>
+
+                <p:column headerText="nombre">
+                    <h:outputText value="#{cliente.nombre}" />
+                </p:column>
+
+                <p:column headerText="apellido">
+                    <h:outputText value="#{cliente.apellido}" />
+                </p:column>
+
+                <p:column headerText="nit">
+                    <h:outputText value="#{cliente.nit}" />
+                </p:column>
+                <p:column headerText="Acciones">
+                    <p:commandLink value="Modificar" actionListener="#{beanCliente.buscarCliente(cliente)}" oncomplete="PF('wdialDatos').show();" update=':dialDatos'/>
+                </p:column>
+            </p:dataTable>
+        </h:form>    
+
+        <!--ventana emergente-->
+        <p:dialog header="Clientes" widgetVar="wdialDatos" id="dialDatos">
+            <h:form id="frmModi">
+                <p:outputLabel value="Código:"/>
+                <p:inputText value="#{beanCliente.datos.id}" required="true"/>
+                <p:outputLabel value="Nombre:"/>
+                <p:inputText value="#{beanCliente.datos.nombre}" required="true"/>
+                <p:outputLabel value="Descripción:"/>
+                <p:inputText value="#{beanCliente.datos.apellido}" required="true"/>
+                <p:commandButton value="Guardar"/>
+            </h:form>
+        </p:dialog>
     </h:body>
 </html>
 

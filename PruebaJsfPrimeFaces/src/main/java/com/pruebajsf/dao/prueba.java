@@ -19,7 +19,7 @@ public class prueba {
     public static void main(String[] args) {
        ClienteDao cliente = new ClienteDao();
        Cliente datos = new Cliente();
-       datos.setId(11);
+       datos.setId(12);
        datos.setNombre("inventado");
        datos.setApellido("nuevo");
        datos.setNit("123");
